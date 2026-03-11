@@ -1,5 +1,5 @@
 ---
-name: codex-mpp
+name: agent-payments
 description: >-
   Machine Payment Protocol (MPP) for keyless, pay-per-query access to the Codex
   Supergraph GraphQL API. Use when the user has no API key and wants to pay per
@@ -69,3 +69,4 @@ Expected: GraphQL data + `Payment-Receipt` header.
 | ---- | ------- |
 | [references/mpp-flow.md](references/mpp-flow.md) | Auth matrix, challenge details, error codes |
 | [references/mpp-templates.md](references/mpp-templates.md) | MPP curl templates |
+| [references/wallets.md](references/wallets.md) | Wallet setup: presto (Tempo) and awal (Base) |
