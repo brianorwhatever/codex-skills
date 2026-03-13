@@ -4,27 +4,28 @@ MPP challenges require a funded wallet to sign payment credentials. Which tool t
 
 | Network | Tool | Auth method | Currency |
 | ------- | ---- | ----------- | -------- |
-| Tempo (chain 4217) | `presto` | Passkey via `presto login` | USDC |
+| Tempo (chain 4217) | `tempo` (`wallet` + `request` extensions) | Passkey via `tempo wallet login` | USDC |
 | Base | `awal` (Coinbase Agentic Wallet) | Email OTP via `npx awal auth login` | USDC |
 
 Pick the tool that matches the network in the `WWW-Authenticate` challenge, then follow the corresponding section below.
 
 ---
 
-## Tempo — presto
+## Tempo — tempo wallet / tempo request
 
-presto is a CLI HTTP client that handles the full MPP 402-challenge flow automatically: it detects the challenge, signs a Tempo transaction, and retries the request in one step.
+`tempo` is the Tempo CLI. The `wallet` extension manages identity and funding; the `request` extension is an HTTP client that handles the full MPP 402-challenge flow automatically — it detects the challenge, signs a Tempo transaction, and retries the request in one step.
 
 ### Install
 
 ```bash
-curl https://presto-binaries.tempo.xyz/install.sh | bash
+curl -fsSL https://tempo.xyz/install | bash
+tempo add wallet
 ```
 
 ### Setup
 
 ```bash
-presto login
+tempo wallet login
 ```
 
 This opens a passkey-based auth flow. No private keys to manage.
@@ -32,35 +33,35 @@ This opens a passkey-based auth flow. No private keys to manage.
 ### Preflight check
 
 ```bash
-presto -q --output-format json whoami
+tempo wallet -t whoami
 ```
 
-Confirm `ready` is `true` and `key.balance` has sufficient USDC before making paid requests.
+Confirm `ready` is `true` and `balance.available` has sufficient USDC before making paid requests.
 
 ### Making a paid request
 
 ```bash
-presto -q -X POST \
+tempo request -t -X POST \
   --json '{"query":"query { getNetworks { id name } }"}' \
-  https://graph.codex.io/graphql | jq
+  https://graph.codex.io/graphql
 ```
 
-presto handles the 402 challenge and payment automatically.
+`tempo request` handles the 402 challenge and payment automatically.
 
 ### Session management
 
-presto can open payment channels for multiple requests to the same origin, avoiding per-request gas:
+Sessions open a payment channel on-chain once, then use off-chain vouchers for subsequent requests (no gas per request):
 
 ```bash
-presto session list          # view active sessions
-presto session close --all   # close all sessions when done
+tempo wallet -t sessions list          # view active sessions
+tempo wallet -t sessions close --all   # close all sessions when done
 ```
 
 ### Recovery
 
 | Symptom | Action |
 | ------- | ------ |
-| `No wallet configured` | Run `presto login` |
+| `No wallet configured` | Run `tempo wallet login` |
 | `Insufficient balance` | Tell the user — wallet needs funding |
 | `Spending limit exceeded` | Tell the user — key limit reached |
 
@@ -131,5 +132,5 @@ All commands accept `--json` for machine-readable output.
 
 - **Never print, log, or read private keys.** Both tools handle key management internally.
 - **Always run a preflight check** before attempting paid requests.
-- **If auth fails, fix it automatically** — run `presto login` or `npx awal auth login` as appropriate, then retry.
-- **Do not mix tools.** Use presto for Tempo challenges, awal for Base challenges.
+- **If auth fails, fix it automatically** — run `tempo wallet login` or `npx awal auth login` as appropriate, then retry.
+- **Do not mix tools.** Use tempo for Tempo challenges, awal for Base challenges.
