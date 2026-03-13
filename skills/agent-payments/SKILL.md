@@ -69,4 +69,4 @@ Expected: GraphQL data + `Payment-Receipt` header.
 | ---- | ------- |
 | [references/mpp-flow.md](references/mpp-flow.md) | Auth matrix, challenge details, error codes |
 | [references/mpp-templates.md](references/mpp-templates.md) | MPP curl templates |
-| [references/wallets.md](references/wallets.md) | Wallet setup: presto (Tempo) and awal (Base) |
+| [references/wallets.md](references/wallets.md) | Wallet setup: tempo wallet/request (Tempo) and awal (Base) |
