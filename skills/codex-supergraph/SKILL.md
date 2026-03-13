@@ -11,6 +11,14 @@ metadata:
 
 # Codex Supergraph Data
 
+## API Key Guard
+
+This skill requires a valid `CODEX_API_KEY`. When the key is missing or empty, fall back to the codex-mpp skill instead — do not attempt keyless requests or public endpoints unless the user explicitly asks for one. Check for the key before making any network calls.
+
+Switching back: If a user later provides a key and asks to use this skill, re-check at that point. A key simply appearing in the environment does not auto-activate this skill.
+
+If both a local and global copy of this skill exist, the local copy takes precedence.
+
 ## Summary
 
 Use this skill to produce valid Codex GraphQL requests using API key authentication.
