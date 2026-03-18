@@ -5,7 +5,6 @@ MPP challenges require a funded wallet to sign payment credentials. Which tool t
 | Network | Tool | Auth method | Currency |
 | ------- | ---- | ----------- | -------- |
 | Tempo (chain 4217) | `tempo` (`wallet` + `request` extensions) | Passkey via `tempo wallet login` | USDC |
-| Base | `awal` (Coinbase Agentic Wallet) | Email OTP via `npx awal auth login` | USDC |
 
 Pick the tool that matches the network in the `WWW-Authenticate` challenge, then follow the corresponding section below.
 
@@ -71,70 +70,9 @@ tempo wallet -t sessions close --all   # close all sessions when done
 
 ---
 
-## Base — awal
-
-awal is Coinbase's Agentic Wallet CLI for Base. It holds USDC, sends payments, trades tokens, and handles x402 paid API requests — all without the agent touching private keys.
-
-### Setup
-
-Authentication uses email OTP:
-
-```bash
-npx awal auth login user@example.com
-# sends a 6-digit code to the email
-
-npx awal auth verify <flowId> <otp>
-# completes sign-in
-```
-
-### Preflight check
-
-```bash
-npx awal status --json
-```
-
-Confirm the wallet is authenticated and has funds:
-
-```bash
-npx awal balance --json
-```
-
-### Making a paid request (x402)
-
-```bash
-npx awal x402 pay <url>
-```
-
-For discovering available paid services:
-
-```bash
-npx awal x402 bazaar search <query>
-```
-
-### Other operations
-
-| Command | Purpose |
-| ------- | ------- |
-| `npx awal address` | Get wallet address |
-| `npx awal send <amount> <to> [--chain]` | Send USDC (supports ENS) |
-| `npx awal trade <amount> <from> <to>` | Swap tokens on Base |
-| `npx awal balance [--chain]` | Check USDC balance |
-
-All commands accept `--json` for machine-readable output.
-
-### Recovery
-
-| Symptom | Action |
-| ------- | ------ |
-| Not authenticated | Run `npx awal auth login <email>` then verify OTP |
-| Insufficient balance | Tell the user — wallet needs funding on Base |
-| Server not running | Run `npx awal status` to check health |
-
----
-
 ## Rules
 
-- **Never print, log, or read private keys.** Both tools handle key management internally.
+- **Never print, log, or read private keys.** Tools handle key management internally.
 - **Always run a preflight check** before attempting paid requests.
-- **If auth fails, fix it automatically** — run `tempo wallet login` or `npx awal auth login` as appropriate, then retry.
-- **Do not mix tools.** Use tempo for Tempo challenges, awal for Base challenges.
+- **If auth fails, fix it automatically** — run `tempo wallet login` as appropriate, then retry.
+- **Do not mix tools.** Use tempo for Tempo challenges.
