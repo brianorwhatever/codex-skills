@@ -12,6 +12,22 @@
 | API key | `Authorization: <key>` | query, mutation, subscription | Standard path |
 | Short-lived token | `Authorization: Bearer <token>` | query, mutation, subscription | Token-scoped limits |
 
+## Common network IDs
+
+| Network | `networkId` |
+| ------- | ----------- |
+| Ethereum | `1` |
+| Base | `8453` |
+| Arbitrum | `42161` |
+| Polygon | `137` |
+| Tempo | `4217` |
+| Optimism | `10` |
+| BNB Chain | `56` |
+| Avalanche | `43114` |
+| Solana | `1399811149` |
+
+Run `getNetworks` once per session for the full list.
+
 ## Session preflight
 
 ```graphql
@@ -58,4 +74,7 @@ Use to validate `networkId` before price/event/chart requests.
 | Symptom | Likely cause | Fix |
 | ------- | ------------ | --- |
 | 401 / UNAUTHENTICATED | Missing or invalid API auth | Validate key/token and header format |
+| 429 / Too Many Requests | Rate limit exceeded | Back off with exponential delay and retry |
 | GraphQL validation error | Input shape mismatch | Check operation args and variable types |
+
+See [gotchas.md](gotchas.md) for detailed failure patterns (symbol formats, pagination, rate limits, etc.).
