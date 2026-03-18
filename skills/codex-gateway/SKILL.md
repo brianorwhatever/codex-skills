@@ -44,5 +44,5 @@ Use this skill to access the Codex Supergraph without an API key via the MPP cha
 | [../codex-supergraph/references/query-templates.md](../codex-supergraph/references/query-templates.md) | **GraphQL query schema and examples — read before constructing queries** |
 | [../codex-supergraph/references/gotchas.md](../codex-supergraph/references/gotchas.md) | Common query failure points |
 | [references/gotchas.md](references/gotchas.md) | MPP-specific failure points |
-| [rules/wallets.md](rules/wallets.md) | Wallet setup: tempo wallet/request (Tempo) and awal (Base) |
+| [rules/wallets.md](rules/wallets.md) | Wallet setup: tempo wallet/request (Tempo) |
 | [references/mpp-flow.md](references/mpp-flow.md) | Auth matrix, challenge details, error codes |
